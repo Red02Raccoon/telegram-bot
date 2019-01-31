@@ -29,3 +29,12 @@ bot.onText(/\/start/, (msg) => {
 bot.onText(/\/sendpic/, (msg) => {
   bot.sendPhoto(msg.chat.id,"https://marketplace.canva.com/MADGwM67DJw/5/thumbnail_large/canva-pink-petaled-flowers-closeup-photo-MADGwM67DJw.jpg", {caption : "Here we go ! \nThis is just a caption "} );  
 });
+
+bot.onText(/\/location/, (msg) => {
+  // onText - работает в группах
+  // message - нет
+
+      bot.sendLocation(msg.chat.id,44.97108, -104.27719);
+      bot.sendMessage(msg.chat.id, "Here is the point");
+  
+});
