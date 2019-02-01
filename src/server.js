@@ -22,14 +22,14 @@ const opts = {
 
 bot.on('message', (msg) => {
   const {chat : { id }, text, location} = msg;
-
+  console.log(msg)
   if (text) {
     if (byArr.includes(text.toString().toLowerCase())) {
       bot.sendMessage(id, "Bye. Hope to see you around again. Have a nice day!");
     }
   
     if (helloArr.includes(text.toString().toLowerCase()) ) {
-      bot.sendMessage(id,"Hello, " + "<b>" + msg.from.first_name + "</b>! Can I help you?", msg.chat.type === "private" ? opts : {parse_mode : "HTML"})
+      bot.sendMessage(id,"Hello, " + "<b>" + msg.from.first_name + "</b>! Can I help you?", opts )
     } 
   }
 
