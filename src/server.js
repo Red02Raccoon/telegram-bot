@@ -3,18 +3,15 @@ import axios from "axios";
 
 import { ENV } from "./config";
 import * as utils from "./utils";
-import * as constants from "./config/const";
 
 var bot = new TelegramBot(ENV.token, {polling: true}); // Включить опрос сервера
 
-
-
 const helloArr = ['hello', 'hi'];
 const byArr = ['bye'];
+
 const opts = {
   parse_mode : "HTML",
   "reply_markup": {
-    // "one_time_keyboard": true,
     "resize_keyboard" : true,
     "keyboard": [
       [{text: "forecast", request_location: true }], 
@@ -24,7 +21,6 @@ const opts = {
 };
 
 bot.on('message', (msg) => {
-  console.log(msg)
   const {chat : { id }, text, location} = msg;
 
   if (text) {
@@ -32,8 +28,8 @@ bot.on('message', (msg) => {
       bot.sendMessage(id, "Bye. Hope to see you around again. Have a nice day!");
     }
   
-    if (helloArr.includes(text.toString().toLowerCase())) {
-      bot.sendMessage(id,"Hello, " + "<b>" + msg.from.first_name + "</b>! Can I help you?", opts)
+    if (helloArr.includes(text.toString().toLowerCase()) ) {
+      bot.sendMessage(id,"Hello, " + "<b>" + msg.from.first_name + "</b>! Can I help you?", msg.chat.type === "private" ? opts : {parse_mode : "HTML"})
     } 
   }
 
@@ -51,10 +47,11 @@ bot.on('message', (msg) => {
 
 });
 
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/sendpic/, (msg) => {
   const {chat : { id }} = msg;
+  const imgUrl = "https://www.motherjones.com/wp-content/uploads/2018/06/blog_lunchtime_red_daisy_rain.jpg"
 
-  bot.sendMessage(id, "Hello, " + "<b>" + msg.from.first_name + "</b>! =) Glad to see you! Can I help you?" , opts);
+  bot.sendPhoto(id, imgUrl ,{ caption : `Some picture for you =)`} ); 
 });
 
 bot.on('polling_error', (error) => {
