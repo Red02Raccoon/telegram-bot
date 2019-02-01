@@ -4,11 +4,14 @@
   "description": "my first telegram-bot",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon src/server.js --exec babel-node --presets=env"
   },
   "author": "Chervona",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "dotenv": "^6.2.0",
     "node-telegram-bot-api": "^0.30.0"
   },
