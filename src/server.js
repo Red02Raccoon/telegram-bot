@@ -57,6 +57,3 @@ bot.onText(/\/sendpic/, (msg) => {
 bot.on('polling_error', (error) => {
   console.log("error", error);  // => 'EFATAL'
 });
-
-//
-

@@ -5,8 +5,8 @@ export const request = (latitude, longitude) => {
   return `${constants.WEATHER_URL}?units=metric&lat=${latitude}&lon=${longitude}&appid=${ENV.weather_key}`
 }
 
-export const formattedTime = (timeMS) => {
-  const date = new Date(timeMS);
+const formattedTime = (timeMS) => {
+  const date = new Date(timeMS*1000);
 
   return `${date.getHours()}:${date.getMinutes()}`
 }
