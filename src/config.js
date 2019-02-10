@@ -4,5 +4,6 @@ dotenv.config();
 
 export const ENV = {
   token: process.env.BOT_TOKEN,
-  weather_key: process.env.WEATHER_KEY
+  weather_key: process.env.WEATHER_KEY,
+  port: process.env.PORT
 }

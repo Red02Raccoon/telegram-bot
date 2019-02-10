@@ -1,10 +1,32 @@
+import Koa from "koa";
+import Router from "koa-router";
+import bodyParser from "koa-bodyparser";
+
 import TelegramBot from "node-telegram-bot-api";
 import axios from "axios";
 
 import { ENV } from "./config";
+import { URL, PORT } from "./config/const";
 import * as utils from "./utils";
 
-var bot = new TelegramBot(ENV.token, {polling: true}); // Включить опрос сервера
+const bot = new TelegramBot(ENV.token); 
+bot.setWebHook(`${URL}/bot`)
+
+const app = new Koa();
+const router = Router();
+
+router.post('/bot', ctx => {
+  const { body } = ctx.request;
+  bot.processUpdate(body)
+  ctx.status = 200;
+});
+
+app.use(bodyParser());
+app.use(router.routes());
+
+app.listen(PORT, () => {
+  console.log(`Listening on ${PORT}`)
+});
 
 const helloArr = ['hello', 'hi'];
 const byArr = ['bye'];
@@ -22,7 +44,7 @@ const opts = {
 
 bot.on('message', (msg) => {
   const {chat : { id }, text, location} = msg;
-  console.log(msg)
+
   if (text) {
     if (byArr.includes(text.toString().toLowerCase())) {
       bot.sendMessage(id, "Bye. Hope to see you around again. Have a nice day!");
