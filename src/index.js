@@ -2,11 +2,14 @@ import Koa from "koa";
 import Router from "koa-router";
 import bodyParser from "koa-bodyparser";
 
+import mongoose from "mongoose";
+import Friend from "./models/User-bd";
+
 import TelegramBot from "node-telegram-bot-api";
 import axios from "axios";
 
 import { ENV } from "./config";
-import { URL, PORT } from "./config/const";
+import { URL, PORT, MONGO_URI } from "./config/const";
 import * as utils from "./utils";
 
 const bot = new TelegramBot(ENV.token); 
@@ -28,6 +31,13 @@ app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`)
 });
 
+// db
+mongoose
+	.connect(MONGO_URI, { useNewUrlParser: true })
+	.then(() => console.log('connected'))
+	.catch(err => console.log(err));
+
+// bot 
 const helloArr = ['hello', 'hi'];
 const byArr = ['bye'];
 
@@ -74,6 +84,18 @@ bot.onText(/\/sendpic/, (msg) => {
   const imgUrl = "https://www.motherjones.com/wp-content/uploads/2018/06/blog_lunchtime_red_daisy_rain.jpg"
 
   bot.sendPhoto(id, imgUrl ,{ caption : `Some picture for you =)`} ); 
+});
+
+bot.onText(/\/setFriend (.+)/, (msg, match) => {
+  const data = match[1].split('-')
+
+  const newFriend = new Friend({
+    name: data[0],
+    date: data[1]
+  });
+  
+  newFriend.save()
+
 });
 
 bot.on('polling_error', (error) => {
